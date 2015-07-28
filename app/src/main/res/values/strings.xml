@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Spotify Streamer</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_top10">Spotify Streamer</string>
+
+    <string name="pref_lastsearch_ID">prefLocationText</string>
+    <string name="pref_lastsearch_label">Location</string>
+    <string name="pref_lastsearch_key" >lastsearch</string>
+    <string name="pref_lastsearch_default"></string>
+    <string name="title_activity_activity_top10">activity_top10</string>
+    <string name="title_activity_player">Spotify Streamer</string>
+
+
+</resources>

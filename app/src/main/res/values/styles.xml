@@ -1,0 +1,86 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="android:actionBarStyle">@style/themeActionBar</item>
+        <!--
+                <item name="android:actionBarTabTextStyle">@style/styleActionBarTabText</item>
+                <item name="android:actionMenuTextColor">@color/actionbar_text</item>
+                <item name="android:actionBarTabStyle">@style/styleActionBarTabs</item>
+        -->
+        <!-- Support library compatibility
+        <item name="actionBarStyle">@style/themeActionBar</item>
+        <item name="actionBarTabTextStyle">@style/styleActionBarTabText</item>
+        <item name="actionMenuTextColor">@color/actionbar_text</item>
+        <item name="actionBarTabStyle">@style/styleActionBarTabs</item>
+        -->
+    </style>
+
+
+    <!-- ActionBar styles -->
+    <style name="themeActionBar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+        <!--
+               <item name="android:background">@drawable/abactionbargradient</item>
+               <item name="android:titleTextStyle">@style/styleActionBarTitleText</item>
+        -->
+        <item name="android:subtitleTextStyle">@style/styleActionBarSubTitleText</item>
+        <!-- Support library compatibility -->
+        <!--
+            <item name="background">@drawable/abactionbargradient</item>
+            <item name="titleTextStyle">@style/styleActionBarTitleText</item>
+        -->
+        <item name="subtitleTextStyle">@style/styleActionBarSubTitleText</item>
+    </style>
+
+    <!-- ActionBar title text -->
+    <!--
+    <style name="styleActionBarTitleText"
+        parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">@color/actionbar_title_text</item>
+    -->
+    <!-- The textColor property is backward compatible with the Support Library -->
+    <!--
+    </style>
+    -->
+
+
+
+    <!-- ActionBar title text -->
+    <style name="styleActionBarSubTitleText"
+        parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Subtitle">
+        <item name="android:textColor">@color/actionbar_subtitle_lightgray</item>
+        <!-- The textColor property is backward compatible with the Support Library -->
+    </style>
+
+
+    <!-- ActionBar tabs text -->
+
+    <!--
+    <style name="styleActionBarTabText"
+        parent="@style/Widget.AppCompat.ActionBar.TabText">
+        <item name="android:textColor">@color/actionbar_text</item>
+        <item name="android:textSize">10dp</item>
+    -->
+    <!-- The textColor property is backward compatible with the Support Library -->
+    <!--
+    </style>
+    -->
+
+    <!-- ActionBar tabs styles -->
+    <!--
+    <style name="styleActionBarTabs"
+        parent="@style/Widget.AppCompat.ActionBar.TabView">
+    -->
+    <!-- tab indicator -->
+    <!--
+        <item name="android:background">@drawable/abactionbartabs</item>
+    -->
+    <!-- Support library compatibility -->
+
+    <!--
+        <item name="background">@drawable/abactionbartabs</item>
+    </style>
+    -->
+
+</resources>
