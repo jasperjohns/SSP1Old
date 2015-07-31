@@ -41,8 +41,6 @@ public class top10Fragment extends Fragment {
     private final String LIST_POSITION ="listPosition";
 
 
-
-
     TrackDataAdapter adapter;
 
     private List<TrackData> tracksData;
@@ -105,8 +103,6 @@ public class top10Fragment extends Fragment {
         listViewTracks = (ListView) v.findViewById(R.id.listViewTracks);
         adapter = new TrackDataAdapter(getActivity(),0, arrayTracks);
         listViewTracks.setAdapter(adapter);
-
-
     }
 
     private void SetUpListeners () {
@@ -186,8 +182,6 @@ public class top10Fragment extends Fragment {
         savedInstanceState.putParcelableArrayList(ARTIST_TRACKS, arrayTracks);
 
         super.onSaveInstanceState(savedInstanceState);
-
-
     }
 
     @Override

@@ -38,12 +38,11 @@ public class playerActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
+    @Override
     public void onBackPressed(){
         // do something here and don't write super.onBackPressed()
         super.onBackPressed();
     }
-
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -54,4 +53,5 @@ public class playerActivity extends ActionBarActivity {
         }
         return super.onKeyDown(keyCode, event);
     }
+
 }

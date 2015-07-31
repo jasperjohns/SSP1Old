@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -52,6 +53,11 @@ public class playerActivityFragment extends Fragment {
     private ImageView mImgPlay;
     private ImageView mImgPrev;
     private ImageView mImgNext;
+    private TextView mTextArtitst;
+    private TextView mTextAlbum;
+    private TextView mTextTrack;
+    private ImageView mImgTrack;
+
 
     private TextView mTxtSongCurrentDuration;
     private TextView mTxtSongTotalDuration;
@@ -63,16 +69,20 @@ public class playerActivityFragment extends Fragment {
 
     ArrayList<TrackData> mArrayTracks;
 
-
-
     public playerActivityFragment() {
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+        setRetainInstance(true);
+    }
+
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-
 
         View rootView =
                 inflater.inflate(R.layout.fragment_player, container, false);
@@ -97,15 +107,11 @@ public class playerActivityFragment extends Fragment {
             mArtistTrackImage = bundle.getString(ARTIST_TRACK_IMAGE).toString();
         }
 
-
         if(bundle.getParcelableArrayList(ARTIST_TRACKS)!= null) {
             mArrayTracks = bundle.getParcelableArrayList(ARTIST_TRACKS);
         }
 
         mListPosition= bundle.getInt(LIST_POSITION);
-
-
-
 
 //        UpdateData(mArtistsPreviewURL);
 
@@ -113,6 +119,7 @@ public class playerActivityFragment extends Fragment {
         ((ActionBarActivity)getActivity()).getSupportActionBar().setSubtitle(bundle.getString(ARTIST_NAME).toString());
 
         SetUpUI(rootView);
+        AssignUIValues();
         SetUpListeners();
 
         playSong(mListPosition);
@@ -121,9 +128,52 @@ public class playerActivityFragment extends Fragment {
         return rootView;
     }
 
+
+    /**
+     * react to the user tapping the back/up icon in the action bar
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+
+                if (mMediaPlayer.isPlaying()) {
+                    if (mMediaPlayer != null) {
+                        mMediaPlayer.stop();
+                        mMediaPlayer.release();
+                    }
+
+                } else {
+                    if (mMediaPlayer != null) {
+                        mMediaPlayer.release();
+                    }
+                }
+
+
+                // this takes the user 'back', as if they pressed the left-facing triangle icon on the main android toolbar.
+                // if this doesn't work as desired, another possibility is to call `finish()` here.
+
+                getActivity().onBackPressed();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+
     private void playSong(int indexValue) {
         Log.v(LOG_TAG, Integer.toString(indexValue));
         TrackData track = (TrackData) mArrayTracks.get(indexValue);
+
+
+        mArtistName = track.getArtists();
+        mArtistAlbum = track.getArtistAlbum();
+        mArtistTrack = track.getArtistTrack();
+        mArtistsPreviewURL=track.getPreview_URL();
+        mArtistTrackImage=track.getTrackImage();
+        AssignUIValues();
+
+
         UpdateData(track.getPreview_URL());
 
         if (indexValue >= (mArrayTracks.size()-1)){
@@ -135,10 +185,10 @@ public class playerActivityFragment extends Fragment {
 
     private void SetUpUI(View v){
 
-        TextView textArtitst = (TextView) v.findViewById((R.id.textArtist));
-        TextView textAlbum = (TextView) v.findViewById((R.id.textAlbum));
-        TextView textTrack = (TextView) v.findViewById((R.id.textTrack));
-        ImageView imgTrack = (ImageView) v.findViewById((R.id.imgTrack));
+        mTextArtitst = (TextView) v.findViewById((R.id.textArtist));
+        mTextAlbum = (TextView) v.findViewById((R.id.textAlbum));
+        mTextTrack = (TextView) v.findViewById((R.id.textTrack));
+        mImgTrack = (ImageView) v.findViewById((R.id.imgTrack));
 
         mProgressBar = (SeekBar) v.findViewById((R.id.songProgressBar));
         mImgPlay = (ImageView) v.findViewById((R.id.imgPlay));
@@ -149,12 +199,17 @@ public class playerActivityFragment extends Fragment {
         mTxtSongTotalDuration  = ( TextView) v.findViewById(R.id.songTotalDuration);
 
 
-        textArtitst.setText(mArtistName);
-        textAlbum.setText(mArtistAlbum);
-        textTrack.setText(mArtistTrack);
 
-        Picasso.with(getActivity().getBaseContext()).load(mArtistTrackImage).resize(200, 200).centerCrop().into(imgTrack);
 
+    }
+
+    private void AssignUIValues(){
+
+        mTextArtitst.setText(mArtistName);
+        mTextAlbum.setText(mArtistAlbum);
+        mTextTrack.setText(mArtistTrack);
+
+        Picasso.with(getActivity().getBaseContext()).load(mArtistTrackImage).resize(200, 200).centerCrop().into(mImgTrack);
 
     }
 
@@ -187,6 +242,47 @@ public class playerActivityFragment extends Fragment {
                         mMediaPlayer.start();
                         mImgPlay.setImageResource(android.R.drawable.ic_media_pause);
                     }
+                }
+            }
+        });
+        // Next Button
+        mImgNext.setClickable(true);
+        mImgNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mMediaPlayer.isPlaying()) {
+                    if (mMediaPlayer != null) {
+                        mMediaPlayer.stop();
+                        mMediaPlayer.reset();
+                        mImgPlay.setImageResource(android.R.drawable.ic_media_pause);
+                        mListPosition++;
+                        if (mListPosition > mArrayTracks.size()) {
+                            mListPosition = 0;
+                        }
+                        playSong(mListPosition);
+                    }
+
+                }
+            }
+        });
+
+        // Prev Button
+        mImgPrev.setClickable(true);
+        mImgPrev.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mMediaPlayer.isPlaying()) {
+                    if (mMediaPlayer != null) {
+                        mListPosition--;
+                        if (mListPosition < 0) {
+                            mListPosition = mArrayTracks.size()-1;
+                        }
+                        mMediaPlayer.stop();
+                        mMediaPlayer.reset();
+                        mImgPlay.setImageResource(android.R.drawable.ic_media_pause);
+                        playSong(mListPosition);
+                    }
+
                 }
             }
         });
@@ -236,10 +332,10 @@ public class playerActivityFragment extends Fragment {
 
     }
 
-
     private void UpdateData(String artistsPreviewURL){
         new FetchDataTask().execute(artistsPreviewURL);
     }
+
 
     // HANDLERS - that manage the runnables
     private void updateProgressBar(){
@@ -316,9 +412,4 @@ public class playerActivityFragment extends Fragment {
             super.onPostExecute(preview_url);
         }
     }
-
-
-
-
-
 }
