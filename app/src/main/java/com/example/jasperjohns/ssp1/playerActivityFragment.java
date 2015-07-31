@@ -1,17 +1,19 @@
 package com.example.jasperjohns.ssp1;
 
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
@@ -25,7 +27,7 @@ import java.util.ArrayList;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class playerActivityFragment extends Fragment {
+public class playerActivityFragment extends DialogFragment {
 
     private final String LOG_TAG = playerActivityFragment.class.getSimpleName();
     private final String MSG_NOITEMS = "Sorry, no items found";
@@ -128,6 +130,18 @@ public class playerActivityFragment extends Fragment {
         return rootView;
     }
 
+
+    /** The system calls this only when creating the layout in a dialog. */
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        // The only reason you might override this method when using onCreateView() is
+        // to modify any dialog characteristics. For example, the dialog includes a
+        // title by default, but your custom layout might not need it. So here you can
+        // remove the dialog title, but you must call the superclass to get the Dialog.
+        Dialog dialog = super.onCreateDialog(savedInstanceState);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        return dialog;
+    }
 
     /**
      * react to the user tapping the back/up icon in the action bar
