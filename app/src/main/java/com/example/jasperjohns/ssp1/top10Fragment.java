@@ -1,8 +1,8 @@
 package com.example.jasperjohns.ssp1;
-import android.content.Intent;
+
+import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,21 +25,20 @@ import kaaes.spotify.webapi.android.models.Tracks;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class top10Fragment extends Fragment {
+public class top10Fragment extends android.support.v4.app.Fragment {
 
     private final String LOG_TAG = top10Fragment.class.getSimpleName();
     private final String MSG_NOITEMS = "Sorry, no items found";
     private final String LISTPOSITION_TAG = "list_position";
 
-    private final String ARTIST_NAME = "artistname";
-    private final String ARTIST_ALBUM = "artistalbum";
-    private final String ARTIST_TRACKS = "artisttracks";
-    private final String ARTIST_TRACK = "artisttrack";
-    private final String ARTIST_TRACK_PREVIEW_URL = "artisttrackpreviewURL";
-    private final String ARTIST_TRACK_IMAGE = "artisttrackimage";
-    private final String SPOTIFY_ID = "spotifyid";
-    private final String LIST_POSITION ="listPosition";
-
+    public static final String ARTIST_NAME = "artistname";
+    public static final String ARTIST_ALBUM = "artistalbum";
+    public static final String ARTIST_TRACKS = "artisttracks";
+    public static final String ARTIST_TRACK = "artisttrack";
+    public static final String ARTIST_TRACK_PREVIEW_URL = "artisttrackpreviewURL";
+    public static final String ARTIST_TRACK_IMAGE = "artisttrackimage";
+    public static final String SPOTIFY_ID = "spotifyid";
+    public static final String LIST_POSITION ="listPosition";
 
     TrackDataAdapter adapter;
 
@@ -49,6 +48,20 @@ public class top10Fragment extends Fragment {
 
     private String mSpotifyID;
     private String mArtistName;
+
+
+    /**
+     * A callback interface that all activities containing this fragment must
+     * implement. This mechanism allows activities to be notified of item
+     * selections.
+     */
+    public interface Callback {
+        /**
+         * DetailFragmentCallback for when an item has been selected.
+         */
+        public void onItemSelected(int position , String spotifyID, ArrayList<TrackData> arrayTracks );
+    }
+
 
     public top10Fragment() {
     }
@@ -64,9 +77,18 @@ public class top10Fragment extends Fragment {
             mArtistName = savedInstanceState.getString(ARTIST_NAME);
         }
         else {
-            Bundle bundle = getActivity().getIntent().getExtras();
+//            Bundle bundle = getActivity().getIntent().getExtras();
+
+            Bundle bundle = getArguments();
 
             if (bundle !=null) {
+                if (getArguments().containsKey(SPOTIFY_ID)) {
+                    mSpotifyID = getArguments().getString(SPOTIFY_ID).toString();
+                    //           Log.v(LOG_TAG, bundle.getString(Intent.EXTRA_TEXT).toString());
+                    UpdateData(mSpotifyID);
+
+                }
+
                 if(bundle.getString(SPOTIFY_ID)!= null)
                 {
                     mSpotifyID = bundle.getString(SPOTIFY_ID).toString();
@@ -80,11 +102,7 @@ public class top10Fragment extends Fragment {
                     ((ActionBarActivity)getActivity()).getSupportActionBar().setSubtitle(mArtistName);
                 }
             }
-
-
         }
-
-
 
         SetUpUI(rootView);
         SetUpListeners();
@@ -105,13 +123,29 @@ public class top10Fragment extends Fragment {
         listViewTracks.setAdapter(adapter);
     }
 
+
+
     private void SetUpListeners () {
         listViewTracks.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                Activity activity = getActivity();
+                Callback callback = (Callback)activity;
+                callback.onItemSelected(position, mSpotifyID, arrayTracks);
+
+//                ((Callback) getActivity()).onItemSelected(position, mSpotifyID, arrayTracks);
+
+
+/*
                 Object listItem = listViewTracks.getItemAtPosition(position);
                 //               Log.v(LOG_TAG, listItem.toString());
+
                 TrackData track = arrayTracks.get(position);
+
+
+
+
 
 
 //                Intent top10Act = new Intent(getActivity(), top10.class).putExtra(Intent.EXTRA_TEXT, artist.getArtistId()) ;
@@ -129,6 +163,7 @@ public class top10Fragment extends Fragment {
 
 ////                Toast.makeText(getActivity(), "selected Item Name is " + listItem.toString(), Toast.LENGTH_LONG).show();
                 startActivity(playerAct);
+*/
             }
         });
 

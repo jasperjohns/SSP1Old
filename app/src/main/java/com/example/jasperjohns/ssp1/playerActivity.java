@@ -13,6 +13,40 @@ public class playerActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player);
+
+        if (savedInstanceState == null) {
+            // Create the detail fragment and add it to the activity
+            // using a fragment transaction.
+            Bundle arguments = new Bundle();
+
+            arguments.putString(top10Fragment.ARTIST_NAME,
+                    getIntent().getStringExtra(top10Fragment.ARTIST_NAME));
+
+            arguments.putString(top10Fragment.ARTIST_ALBUM,
+                    getIntent().getStringExtra(top10Fragment.ARTIST_ALBUM));
+
+            arguments.putString(top10Fragment.ARTIST_TRACK,
+                    getIntent().getStringExtra(top10Fragment.ARTIST_TRACK));
+
+            arguments.putString(top10Fragment.ARTIST_TRACK_PREVIEW_URL,
+                    getIntent().getStringExtra(top10Fragment.ARTIST_TRACK_PREVIEW_URL));
+
+            arguments.putString(top10Fragment.ARTIST_TRACK_IMAGE,
+                    getIntent().getStringExtra(top10Fragment.ARTIST_TRACK_IMAGE));
+
+            arguments.putParcelableArrayList(top10Fragment.ARTIST_TRACKS,
+                    getIntent().getParcelableArrayListExtra(top10Fragment.ARTIST_TRACKS));
+
+            arguments.putInt(top10Fragment.LIST_POSITION,
+                    getIntent().getIntExtra(top10Fragment.LIST_POSITION, 0));
+
+
+            playerActivityFragment fragment = new playerActivityFragment();
+            fragment.setArguments(arguments);
+            getFragmentManager().beginTransaction()
+                    .add(R.id.fragment_container, fragment)
+                    .commit();
+        }
     }
 
 

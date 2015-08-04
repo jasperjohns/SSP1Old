@@ -89,7 +89,8 @@ public class playerActivityFragment extends DialogFragment {
         View rootView =
                 inflater.inflate(R.layout.fragment_player, container, false);
 
-        Bundle bundle = getActivity().getIntent().getExtras();
+//        Bundle bundle = getActivity().getIntent().getExtras();
+        Bundle bundle = getArguments();
 
         if(bundle.getString(ARTIST_NAME)!= null)  {
             mArtistName = bundle.getString(ARTIST_NAME).toString();

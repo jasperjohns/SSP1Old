@@ -1,7 +1,5 @@
 package com.example.jasperjohns.ssp1;
 
-import android.app.Fragment;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -28,7 +26,7 @@ import kaaes.spotify.webapi.android.models.ArtistsPager;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class MainActivityFragment extends Fragment {
+public class MainActivityFragment extends android.support.v4.app.Fragment {
 
 
     ListView listViewArtists;
@@ -44,17 +42,33 @@ public class MainActivityFragment extends Fragment {
 
 
 
-    private final String ARTIST_NAME = "artistname";
-    private final String ARTIST_ALBUM = "artistalbum";
-    private final String ARTIST_TRACK = "artisttrack";
-    private final String ARTIST_TRACK_PREVIEW_URL = "artisttrackpreviewURL";
-    private final String ARTIST_TRACK_IMAGE = "artisttrackimage";
-    private final String SPOTIFY_ID = "spotifyid";
+    public final String ARTIST_NAME = "artistname";
+    public final String ARTIST_ALBUM = "artistalbum";
+    public final String ARTIST_TRACK = "artisttrack";
+    public final String ARTIST_TRACK_PREVIEW_URL = "artisttrackpreviewURL";
+    public final String ARTIST_TRACK_IMAGE = "artisttrackimage";
+    public final String SPOTIFY_ID = "spotifyid";
 
 
 
     private final String MSG_NOITEMS = "Sorry, no items found";
     private boolean bReloadData = false;
+    private static boolean mTwoPane;
+
+    /**
+     * A callback interface that all activities containing this fragment must
+     * implement. This mechanism allows activities to be notified of item
+     * selections.
+     */
+    public interface Callback {
+        /**
+         * DetailFragmentCallback for when an item has been selected.
+         */
+        public void onItemSelected(String artistID, String artistName);
+    }
+
+
+
 
     public MainActivityFragment() {
     }
@@ -66,6 +80,14 @@ public class MainActivityFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         setRetainInstance(true);
+
+        // Is this a two-pane/tablet layout or not
+        if ( getActivity().findViewById(R.id.fragment_container) != null) {
+            mTwoPane = true;
+        } else {
+            mTwoPane = false;
+        }
+
 
         mLastSearch = loadLastSearch();
         if (!mLastSearch.equalsIgnoreCase("")){
@@ -156,16 +178,41 @@ public class MainActivityFragment extends Fragment {
                 //               Log.v(LOG_TAG, listItem.toString());
                 ArtistData artist =  arrayArtists.get(position);
 
+                String artistID = artist.getArtistId();
+                String artistName=  artist.getArtistName();
 
-//                Intent top10Act = new Intent(getActivity(), top10.class).putExtra(Intent.EXTRA_TEXT, artist.getArtistId()) ;
-                Intent top10Act = new Intent(getActivity(), top10.class);
-                Bundle extras = new Bundle();
-                extras.putString(SPOTIFY_ID,artist.getArtistId());
-                extras.putString(ARTIST_NAME,artist.getArtistName());
-                top10Act.putExtras(extras);
+                ((Callback) getActivity()).onItemSelected(artistID, artistName);
+/*
+                if (mTwoPane){
+                    Bundle extras = new Bundle();
+                    extras.putString(SPOTIFY_ID,artist.getArtistId());
+                    extras.putString(ARTIST_NAME, artist.getArtistName());
+
+                    top10Fragment fragment = new top10Fragment();
+                    fragment.setArguments(extras);
+
+                    getFragmentManager().beginTransaction()
+                            .replace(R.id.fragment_container, fragment)
+                            .commit();
+                }
+                else {
+
+                    Intent top10Act = new Intent(getActivity(), top10.class);
+                    Bundle extras = new Bundle();
+                    extras.putString(SPOTIFY_ID, artist.getArtistId());
+                    extras.putString(ARTIST_NAME,artist.getArtistName());
+                    top10Act.putExtras(extras);
 
 ////                Toast.makeText(getActivity(), "selected Item Name is " + listItem.toString(), Toast.LENGTH_LONG).show();
-                startActivity(top10Act);
+                    startActivity(top10Act);
+
+                }
+*/
+
+
+
+
+//                Intent top10Act = new Intent(getActivity(), top10.class).putExtra(Intent.EXTRA_TEXT, artist.getArtistId()) ;
             }
         });
 
