@@ -93,8 +93,6 @@ public class MainActivity extends ActionBarActivity  implements  MainActivityFra
             Intent player = new Intent(this, playerActivity.class);
             player.putExtras(extras);
             startActivity(player);
-
-
         }
 
     }
