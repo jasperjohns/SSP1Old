@@ -9,6 +9,8 @@ import android.view.MenuItem;
 
 public class playerActivity extends ActionBarActivity {
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,8 +39,10 @@ public class playerActivity extends ActionBarActivity {
             arguments.putParcelableArrayList(top10Fragment.ARTIST_TRACKS,
                     getIntent().getParcelableArrayListExtra(top10Fragment.ARTIST_TRACKS));
 
+
             arguments.putInt(top10Fragment.LIST_POSITION,
                     getIntent().getIntExtra(top10Fragment.LIST_POSITION, 0));
+
 
 
             playerActivityFragment fragment = new playerActivityFragment();

@@ -1,6 +1,7 @@
 package com.example.jasperjohns.ssp1;
 
 
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -8,6 +9,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import java.util.ArrayList;
+
+
+
 
 
 public class MainActivity extends ActionBarActivity  implements  MainActivityFragment.Callback, top10Fragment.Callback {
@@ -24,6 +28,13 @@ public class MainActivity extends ActionBarActivity  implements  MainActivityFra
     public final String SPOTIFY_ID = "spotifyid";
     private final String LIST_POSITION ="listPosition";
 
+    //service
+    private MusicService mMusicSrv;
+    private Intent mPlayIntent;
+    //binding
+    private boolean mMusicBound=false;
+
+    private MusicService s;
 
 
 
@@ -85,9 +96,13 @@ public class MainActivity extends ActionBarActivity  implements  MainActivityFra
             playerActivityFragment player = new playerActivityFragment();
             player.setArguments(extras);
 
+            FragmentManager fm = getFragmentManager();
+            player.show(fm, null);
+/*
             getFragmentManager().beginTransaction()
                     .replace(R.id.fragment_container, player, PLAYER_TAG)
                     .commit();
+*/
         }
         else {
             Intent player = new Intent(this, playerActivity.class);
@@ -96,6 +111,26 @@ public class MainActivity extends ActionBarActivity  implements  MainActivityFra
         }
 
     }
+/*
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Intent intent= new Intent(this, MusicService.class);
+        bindService(intent, mConnection,
+                Context.BIND_AUTO_CREATE);
+    }
+*/
+
+
+
+
+    //start and bind the service when the activity starts
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
 
 
     @Override
